@@ -8,6 +8,36 @@
     <script src="app.js" defer></script>
 </head>
 <body>
-    
+    <header>
+        <div class="header-text">Quick Notes</div>
+        <button class="add-notes-btn" type="button">+ Add Note</button>
+        <button class="theme-btn" type="button">☀️</button>
+    </header>
+
+    <main class="notes-container">
+
+    </main>
+
+    <dialog id="note-dialog">
+        <form method="dialog">
+            <div class="dialog-header">
+                <div class="dialog-title">Add New Note</div>
+                <button class="close-btn" type="button">X</button>
+            </div>
+            
+            <div class="dialog-content">
+                <label for="note-title">Title</label>
+                <input type="text" id="note-title" name="title" placeholder="Enter note title..." required>
+
+                <label for="note-content">Content</label>
+                <textarea id="note-content" name="content" placeholder="Write your note here..." required></textarea>
+            </div>
+
+            <div class="dialog-footer">
+                <button class="cancel-btn" type="submit" value="cancel">Cancel</button>
+                <button class="save-btn" type="submit" value="save">Save</button>
+            </div>
+        </form>
+    </dialog>
 </body>
 </html>
