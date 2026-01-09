@@ -8,9 +8,12 @@
 
 :root {
     --bg: #eeeeee;
-    --header-text: #1B1B1B;
+    --surface: #ffffff;   
+    --text: #1B1B1B;
     --yellow-accent: #F1BE2A;
-    --notes-background: #D3D3D3
+    --muted-text: rgba(27,27,27,0.6);
+    --border: rgba(0,0,0,0.12);
+    --shadow: rgba(0,0,0,0.18);
 }
 
 body {
@@ -26,21 +29,21 @@ header {
 }
 
 .header-text {
-    color: var(--header-text);
+    color: var(--text);
     font-weight: 900;
     font-size: 32px;
 }
 
 button {
     cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
+    transition: filter 0.2s ease-in-out;
 }
 
 button:hover {
-    background-color: #DAA520;
+    filter: brightness(0.9)
 }
 
-.header-buttons > button, .empty-state > button {
+.header-buttons button, .empty-state button {
     height: 50px;
     font-size: 20px;
     border-radius: 12px;
