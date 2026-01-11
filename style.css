@@ -8,12 +8,26 @@
 
 :root {
     --bg: #eeeeee;
-    --surface: #ffffff;   
+    --surface: #ffffff;
     --text: #1B1B1B;
     --yellow-accent: #F1BE2A;
     --muted-text: rgba(27,27,27,0.6);
-    --border: rgba(0,0,0,0.12);
     --shadow: rgba(0,0,0,0.18);
+    --yellow-accent-hover: #D39A00;
+    --surface-hover: #F4F4F4;
+    --bg-hover: #DADADA;
+}
+
+.dark-theme {
+    --bg: #1E1F26;
+    --surface: #2C2F38;
+    --text: #eeeeee;
+    --yellow-accent: #F1BE2A;
+    --muted-text: #CFCFCF;
+    --shadow: rgba(0, 0, 0, 0.55);
+    --yellow-accent-hover: #D39A00;
+    --surface-hover: #232630;
+    --bg-hover: #252733;
 }
 
 body {
@@ -40,17 +54,25 @@ header {
 
 button {
     cursor: pointer;
-    transition: filter 0.2s ease
+    transition: background-color 0.2s ease;
 }
 
 .add-notes-btn:hover,
-.theme-btn:hover,
-.cancel-btn:hover,
-.save-btn:hover, 
-.close-btn:hover,
-.edit-note-btn:hover{
-    filter: brightness(0.9);
+.dialog-footer .save-btn:hover {
+    background-color: var(--yellow-accent-hover);
 }
+
+.theme-btn:hover,
+.close-btn:hover {
+    background-color: var(--surface-hover);
+}
+
+.cancel-btn:hover,
+.edit-note-btn:hover,
+.delete-note-btn:hover {
+    background-color: var(--bg-hover);
+}
+
 
 .header-buttons button, .empty-state button {
     height: 50px;
@@ -69,11 +91,12 @@ button {
 
 .theme-btn {
     width: 50px;
-    background-color: #D3D3D3;
+    background-color: var(--surface);
 }
 
 #note-dialog {
     background-color: var(--surface);
+    color: var(--text);
     box-shadow: 0 12px 40px var(--shadow);
     width: 90vw;
     max-width: 500px;
@@ -85,7 +108,7 @@ button {
 }
 
 #note-dialog::backdrop {
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(4px);
 }
 
@@ -103,7 +126,6 @@ button {
     height: 30px;
     border: none;
     background-color: var(--surface);
-    color: var(--text);
     border-radius: 8px;
     display: flex;
     justify-content: center;
@@ -113,7 +135,7 @@ button {
 .close-btn .icon {
     width: 18px;
     height: 18px;
-    fill: currentColor;
+    color: var(--text);
 }
 
 .dialog-content{
@@ -154,6 +176,11 @@ input::placeholder, textarea::placeholder {
   color: var(--muted-text);
 }
 
+button:focus-visible {
+    outline: 2px solid var(--yellow-accent);
+    outline-offset: 1.5px;
+}
+
 input:focus, textarea:focus {
     outline: 2px solid var(--yellow-accent);
 }
@@ -171,9 +198,11 @@ input:focus, textarea:focus {
     border-radius: 12px;
     font: inherit;
     font-weight: 500;
+    background-color: var(--bg);
+    color: var(--text);
 }
 
-.save-btn {
+.dialog-footer .save-btn {
     background-color: var(--yellow-accent);
     color: var(--surface);
 }
@@ -186,7 +215,12 @@ input:focus, textarea:focus {
     grid-column: 1 / -1;
     place-self: center;
     text-align: center;
-    transform: translatey(200px);
+    transform: translateY(200px);
+    color: var(--text);
+}
+
+.empty-state p {
+    color: var(--muted-text);
 }
 
 .notes-container {
@@ -198,15 +232,15 @@ input:focus, textarea:focus {
 
 .note-card {
     background-color: var(--surface);
+    color: var(--text);
     border-radius: 12px;
     padding: 32px;
     position: relative;
-    transition: all 0.2s ease;
+    transition: transform 0.2s ease;
 }
 
 .note-header {
     margin-bottom: 16px;
-    color: var(--text);
 }
 
 .note-title, .note-content {
@@ -233,12 +267,14 @@ input:focus, textarea:focus {
 }
 
 .edit-note-btn, .delete-note-btn{
+    background-color: var(--bg);
+    color: var(--text);
     border-radius: 8px;
     width: 30px;
     height: 30px;
     border: none;
     opacity: 0;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
     font-size: 20px;
     font-weight: 500;
     display: flex;
@@ -258,7 +294,7 @@ input:focus, textarea:focus {
 }
 
 .delete-note-btn:hover{
-    background-color: #ff5252;
+    background-color: #FF7A7A;
 }
 
 .edit-note-btn .icon,

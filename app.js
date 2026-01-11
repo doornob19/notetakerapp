@@ -1,6 +1,7 @@
 const dialog = document.getElementById("note-dialog");
 const dialogForm = document.getElementById("dialog-form");
 const notesContainer = document.querySelector(".notes-container");
+applyStoredTheme();
 let notes = loadNotes() || [];
 renderNotes();
 
@@ -18,6 +19,11 @@ document.addEventListener("click", (e) => {
     if (e.target.closest(".cancel-btn")) {
         dialog.close();
         dialogForm.reset();
+        return;
+    }
+
+    if (e.target.closest(".theme-btn")) {
+        toggleTheme();
         return;
     }
 
@@ -86,7 +92,7 @@ function renderNotes() {
             <div class="note-header">
                 <h3 class="note-title">${note.title}</h3>
                 <div class="note-actions">
-                    <button class="edit-note-btn type="button" data-id="${note.id}">
+                    <button class="edit-note-btn" type="button" data-id="${note.id}">
                         <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
                         </svg>
@@ -112,4 +118,16 @@ function deleteNote(id) {
     notes = notes.filter(note => note.id !== id);
     saveNotes();
     renderNotes();
+}
+
+function toggleTheme() {
+    const isDark = document.body.classList.toggle('dark-theme');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    document.querySelector(".theme-btn").textContent = isDark ? '☀️' : '🌙';
+}
+
+function applyStoredTheme() {
+    const isDark = localStorage.getItem("theme") === "dark";
+    document.body.classList.toggle("dark-theme", isDark);
+    document.querySelector(".theme-btn").textContent = isDark ? "☀️" : "🌙";
 }
