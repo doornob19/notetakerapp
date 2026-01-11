@@ -101,48 +101,68 @@ function loadNotes() {
 }
 
 function renderNotes() {
-    notesContainer.innerHTML = "";
+    notesContainer.replaceChildren();
 
-    if (notes.length === 0) {
-        notesContainer.innerHTML = `
-        <div class="empty-state">
-            <h2>No notes yet</h2>
-            <p>Create your first note to get started!</p>
-            <button class="add-notes-btn">+ Add Note</button>
-        </div>
-        `;
-        return;
-    }
+  if (notes.length === 0) {
+    const empty = createEl("div", "empty-state");
 
-    notes.forEach((note) => {
-        notesContainer.innerHTML += `
-        <div class="note-card">
-            <div class="note-header">
-                <h3 class="note-title">${note.title}</h3>
-                <div class="note-actions">
-                    <button class="edit-note-btn" type="button" data-id="${note.id}">
-                        <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-                        </svg>
-                    </button>
-                    <button class="delete-note-btn" type="button" data-id="${note.id}">
-                        <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <path d="M4 7h16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"/>
-                            <path d="M10 11v6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"/>
-                            <path d="M14 11v6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"/>
-                            <path d="M6 7l1 14h10l1-14" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="2"/>
-                            <path d="M9 7V4h6v3" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="2"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            <p class="note-content">${note.content}</p>
-        </div>
-        `
-    });
+    const h2 = createEl("h2", "", { textContent: "No notes yet" });
+    const p  = createEl("p", "", { textContent: "Create your first note to get started!" });
+    const addNotesBtn = createEl("button", "add-notes-btn", { type: "button", textContent: "+ Add Note"});
+
+    empty.append(h2, p, addNotesBtn);
+    notesContainer.append(empty);
+    return;
+  }
+
+  for (const note of notes) {
+    const card = createEl("div", "note-card");
+    const header = createEl("div", "note-header");
+    const title = createEl("h3", "note-title", { textContent: note.title });
+    const actions = createEl("div", "note-actions");
+
+    const editBtn = createEl("button", "edit-note-btn", { type: "button" });
+    editBtn.dataset.id = note.id;
+    editBtn.innerHTML = `
+      <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+      </svg>
+    `;
+
+    const deleteBtn = createEl("button", "delete-note-btn", { type: "button" });
+    deleteBtn.dataset.id = note.id;
+    deleteBtn.innerHTML = `
+      <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M4 7h16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"/>
+        <path d="M10 11v6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"/>
+        <path d="M14 11v6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"/>
+        <path d="M6 7l1 14h10l1-14" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="2"/>
+        <path d="M9 7V4h6v3" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="2"/>
+      </svg>
+    `;
+
+    actions.append(editBtn, deleteBtn);
+    header.append(title, actions);
+
+    const content = createEl("p", "note-content", { textContent: note.content });
+
+    card.append(header, content);
+    notesContainer.append(card);
+  }
+}
+
+function createEl(tag, className = "", props = {}) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  Object.assign(node, props);
+  return node;
 }
 
 function deleteNote(id) {
+    if (editingId === id) {
+        dialog.close();
+        resetDialog();
+    }
     notes = notes.filter(note => note.id !== id);
     saveNotes();
     renderNotes();
