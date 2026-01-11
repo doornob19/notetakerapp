@@ -3,7 +3,7 @@
 A simple note-taking web app built with HTML/CSS/JavaScript.
 
 ## Live Demo
-https://doornob19.github.io/notetakerapp/
+https://levine06.github.io/notetakerapp/
 
 ## Features
 - Add, edit, delete notes
